@@ -1,7 +1,9 @@
-# scientific-calulator
+# scientific-calculator
 An advanced, mobile-friendly calculator built using ganja.js
 
 This app works great on mobile, providing a full screen, highly-capable calculator which includes a help button that provides useful guides on what each button does, with examples ready to go!
+
+[LIVE](https://scientific-calulator-pxghqa069-mathcodes.vercel.app/)
 
 <img src='./images/ss.png' width="25%"/>  <img src='./images/ss2.png' width="25.5%"/>
 
