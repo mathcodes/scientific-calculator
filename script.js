@@ -1,4 +1,3 @@
-
 // Minimal calculator implementation. Globals for our current algebra, mode, history, variables etc ..  
 var Al = Algebra(), mode = 0, histor = '', cur = '', store = false, help = false, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10;
 
@@ -36,7 +35,7 @@ var toHelp = (x) => x.replace(/([eE])(\d+)/g, '<i>$1<SUB>$2</SUB></i>').replace(
 
 // Welcome message 
 function hello() {
-  print(toHelp(`<DIV><img src="https://www.jonchristie.net/favicon.png" style="display: flex"; width="50px"/></DIV><DIV class="help" style="position:relative"><HR>Cheat sheet : _? + <i class="green" STYLE="width:40px">P2D</i>,<i class="green" STYLE="width:40px">P3D</i> &nbsp;<BR>Examples : _? + <I>1</I>, <I>2</I>, <i>3</i>, <i>4</i>&nbsp;<HR>`))
+  print(toHelp(`<DIV><img src="https://www.jonchristie.net/favicon.png" style="display: flex"; width="30px"/></DIV><DIV class="help" style="position:relative"><HR>Cheat sheet : _? + <i class="green" STYLE="width:40px">P2D</i>,<i class="green" STYLE="width:40px">P3D</i> &nbsp;<BR>Examples : _? + <I>1</I>, <I>2</I>, <i>3</i>, <i>4</i>&nbsp;<HR>`))
 };
 hello();
 
@@ -106,7 +105,11 @@ var buttons = {
   "x4": { color: 'purple', label: "x<sub>4</sub>", click: () => { if (store) { store = false; x4 = Al.inline(new Function('return ' + cur))(); patch('x4=' + x4.toString()); return show(cur); } cur += 'x4'; show(cur); }, help: "x4 variable" },
   "x9": { color: 'purple', label: "x<sub>9</sub>", click: () => { if (store) { store = false; x9 = Al.inline(new Function('return ' + cur))(); patch('x9=' + x9.toString()); return show(cur); } cur += 'x9'; show(cur); }, help: "x9 variable" },
   // Cl,0,.,
-  "Cl": { color: 'green', label: "Cl", click: () => { if (cur == '') { if (histor == '') { while (graph.firstChild) graph.removeChild(graph.firstChild); x1 = x2 = x3 = x4 = x5 = x6 = x7 = x8 = x9 = x10 = undefined; return hello(); }; histor = ''; hist.innerHTML = histor; }; cur = ''; show(cur); }, help: "Cl : clear last result / all" },
+  "Cl": {
+    color: 'green',
+    label: `<img src="https://www.jonchristie.net/favicon.png" style="display: flex;  justify-content: center; align-items:center; width:30px;"/>`,
+    click: () => { if (cur == '') { if (histor == '') { while (graph.firstChild) graph.removeChild(graph.firstChild); x1 = x2 = x3 = x4 = x5 = x6 = x7 = x8 = x9 = x10 = undefined; return hello(); }; histor = ''; hist.innerHTML = histor; }; cur = ''; show(cur); }, help: "Cl : clear last result / all"
+  },
   "_0": { label: "0", click: () => { cur += '0'; show(cur); } },
   "_.": { label: ".", click: () => { cur += '.'; show(cur); } },
   "V": { color: 'blue', label: "&#x2228;", click: () => { cur += '&'; show(cur); }, help: "dual outer product." },
@@ -156,8 +159,6 @@ var E = function (x0, x1, x2, x3, x4, x5) {
   for (var i = 0; i < 6; i++) buttons['E' + i].el.classList[arguments[i] ? 'remove' : 'add']('disabled');
 }
 E(); e();
-
-
 
 // patch for cocoon.io
 document.body.ontouchstart = function (e) { e.preventDefault(); e.stopPropagation(); }

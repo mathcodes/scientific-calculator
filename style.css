@@ -1,40 +1,323 @@
-body {font-family: Arial, Helvetica, sans-serif;}
-
-/* The Modal (background) */
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+:root{
+  --accent-color: rgb(221, 163, 255);
+  --p-color: rgb(230, 230, 230);
+  --s-color: rgb(40,40,40);
+  --button2-color: rgb(108, 37, 105);
+  --button3-color: rgb(126, 17, 221);
 }
 
-/* Modal Content */
-.modal-content {
-  background-color: #fefefe;
+.calcBody {
+  display: flex;
+  flex-direction: column;
+  font-family: Exo, sans-serif;
+  position: fixed;
+  top: 10px;
+  right: 50px;
+  height: 960px;
+  min-height: 920px;
+  max-height: 100%;
+  background: rgb(14,14,14);
+  padding: 5px;
+  color: var(--accent-color);
+  padding-bottom: 10px;
+  border-radius: 40px 40px 15px 15px;
+  box-shadow: inset 0px -2px 3px 3px rgba(80, 50, 40, 0.2),
+    0px 2px 2px rgba(0, 0, 0, 0.8),
+    inset 0px -1px 1px rgba(255, 255, 255, 0.5),
+    inset 0px -2px 2px rgba(70, 50, 40, 0.8),
+    inset 0px -3px 2px rgba(90, 50, 40, 0.3),
+    4px 4px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Numerical input and graphical display *************************************************/
+.numInput {
+  position: relative;
+  display: block;
+  width: calc(100% - 2px);
+  height: 48px;
+  line-height: 43px;
   margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
+  font-size: 22pt;
+  overflow: hidden;
+  text-align: right;
+  padding-right: 9px;
+  box-sizing: border-box;
+  background: rgba(206, 206, 182, 0.7);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  margin-bottom: 5px;
+  box-shadow: inset 0px -3px 10px rgba(0, 0, 0, 0.05),
+    inset 1px 3px 9px rgba(0, 0, 0, 0.3),
+    inset 1px 1px 1px rgba(0, 0, 0, 0.2),
+    inset -1px -1px 1px rgba(0, 0, 0, 0.1),
+    inset 0px 2px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-/* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
+/* Calculator Buttons (group, buttons, colors, subscript labels) *************************/
+.group {
+  display: flex;
+  width: 100%;
 }
 
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
+.numButton {
+  position: relative;
+  outline: none;
+  width: 70px;
+  flex-grow: 1;
+  height: 54px;
+  display: block-inline;
+  text-align: center;
+  line-height: 54px;
+  display: inline-block;
+  font-size: 20pt;
+  color: var(--p-color);
+  margin: 2px;
+  background: var(--s-color);
+  box-shadow: inset 0px -1px 2px 2px rgba(80, 50, 40, 0.2),
+    inset 0px 1px 0px rgba(0, 0, 0, 0.2),
+    inset 0px -1px 1px rgba(70, 50, 40, 0.8),
+    inset 0px -2px 1px rgba(90, 50, 40, 0.3);
   cursor: pointer;
+}
+
+.noselect {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.numButton:focus {
+  outline: none;
+}
+
+.numButton:active:not(.disabled),
+.numButton.active:not(.disabled) {
+  top: 2px;
+}
+
+.green {
+  line-height: 54px;
+  background-color: rgb(0, 111, 122);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blue {
+  line-height: 54px;
+  background-color: var(--button2-color);
+  color: var(--p-color);
+}
+
+.purple {
+  line-height: 54px;
+  background-color: var(--button3-color);
+  color: var(--p-color);
+}
+
+.red {
+  line-height: 54px;
+  background-color: rgb(144, 234, 0);
+  color: black;
+}
+
+.mini {
+  position: absolute;
+  bottom: .1px;
+  right: 5px;
+  font-size: 45%;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.disabled {
+  color: rgb(132, 132, 132);
+  pointer-events: none;
+  box-shadow: none;
+  border: 1px solid rgba(64, 64, 64, 0.3);
+  box-sizing: border-box;
+}
+
+
+/* Calculator History and help displays **************************************************/
+.historypos {
+  position: absolute;
+  top: 0px;
+  left: 2px;
+  right: 2px;
+  bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+.history {
+  position: relative;
+  background-color: transparent;
+  min-height: 0px;
+  color: #222;
+  padding: 10px;
+  flex-grow: 0;
+  min-width: 0px;
+  top: 10px;
+  left: 0px;
+  text-align: right;
+}
+
+.e {
+  position: relative;
+  top: -3px;
+  font-size: 45%;
+}
+
+.help {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  color: var(--accent-color);
+}
+
+.history>.help {
+  left: 0px;
+}
+
+.help .green {
+  background-color: rgba(240, 255, 220, 1);
+}
+
+.help .red {
+  background-color: rgb(165, 211, 0);
+}
+
+.help .blue {
+  background-color: var(--button2-color);
+}
+
+.help .purple {
+  background-color: var(--button3-color)
+}
+
+.help i {
+  position: relative;
+  user-select: none;
+  outline: none;
+  width: 25px;
+  height: 25px;
+  display: block-inline;
+  text-align: center;
+  line-height: 25px;
+  display: inline-block;
+  font-size: 13pt;
+  opacity: 0.8;
+  color: rgba(0, 0, 0, 0.65);
+  margin: 2px;
+  font-family: Exo;
+  font-style: normal;
+  font-weight: bold;
+  background: rgba(240, 230, 220, 1);
+  border-radius: 5px;
+  border: 1px solid;
+}
+
+/* Current mode display top left of calculator *******************************************/
+.title {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 1.7rem;
+  font-family: serif;
+}
+
+/* Class to render C R M outline letters for sets ****************************************/
+
+
+ 
+
+.green .outline,
+.help .outline {
+  -webkit-text-stroke: 1px #222;
+  -moz-text-stroke: 1px #222;
+  -ms-text-stroke: 1px #222;
+}
+.outline {
+  font-family: serif;
+  -webkit-text-stroke: 1px #fff;
+  -moz-text-stroke: 1px #fff;
+  -ms-text-stroke: 1px #fff;
+  color: rgb(36, 229, 255);
+  font-style: normal;
+}
+/* On small displays (mobile) only display the calculator. *******************************/
+@media (max-width:800px) {
+  .help {
+    display: none;
+  }
+
+  .calcBody .help {
+    display: block;
+  }
+
+  .calcBody {
+    top: 0px;
+    position: Relative;
+    right: 0px;
+    box-shadow: 0px 0px 0px black;
+    border-radius: 0px;
+    margin: auto;
+    height: 100%;
+    max-height: 100%;
+    width: calc(100% - 10px);
+  }
+
+  html {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background-color: rgb(230, 220, 200);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    max-height: 100%;
+    min-height: 100%;
+  }
+}
+
+@media (max-height:180px) {
+  .numButton {
+    height: 44px;
+    line-height: 40px;
+  }
+}
+
+.solution {
+  width: fit-content;
+  height: 2rem;
+  border-radius: 10px;
+  background: #555;
+}
+
+ 
+.numInput{
+  background:rgba(0, 0, 0, 0.05)
+}
+.item{
+  color:black;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+}
+ 
+.mini{
+  color:rgb(36, 229, 255);
+  margin-top: 2px;
 }
