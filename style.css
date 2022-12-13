@@ -157,7 +157,7 @@
   position: relative;
   background-color: transparent;
   min-height: 0px;
-  color: #222;
+  /* color: #222; */
   padding: 10px;
   flex-grow: 0;
   min-width: 0px;
